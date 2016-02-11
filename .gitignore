@@ -1,7 +1,7 @@
 # sublime text 2 files
 *.sublime*
 *.*~*.TMP
-
+.idea
 # temp files
 .DS_Store
 Thumbs.db
@@ -18,5 +18,5 @@ npm-debug.log
 # project ignores
 !.gitkeep
 *__temp
-node_modules/*
+node_modules
 build/*

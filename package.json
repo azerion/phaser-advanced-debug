@@ -1,16 +1,16 @@
 {
-  "name": "phaser-debug",
-  "version": "1.1.9",
-  "description": "Simple debug module for phaser",
-  "author": "Chad Engler <chad@pantherdev.com>",
+  "name": "phaser-advanced-debug",
+  "version": "1.0.0",
+  "description": "Not so simple debug module for phaser",
+  "author": "Ale Bles <a.bles@orangegames.com>",
   "license": "MIT",
-  "homepage": "https://github.com/englercj/phaser-debug",
+  "homepage": "https://github.com/orange-games/phaser-advanced-debug",
   "repository": {
     "type": "git",
-    "url": "https://github.com/englercj/phaser-debug.git"
+    "url": "https://github.com/orange-games/phaser-advanced-debug.git"
   },
   "bugs": {
-    "url": "https://github.com/englercj/phaser-debug/issues"
+    "url": "https://github.com/orange-games/phaser-advanced-debug/issues"
   },
   "keywords": [
     "phaser",
@@ -25,26 +25,16 @@
     "hbsfy": "^2.1.0"
   },
   "devDependencies": {
-    "browserify": "^5.11.1",
-    "event-stream": "^3.1.7",
-    "gulp": "^3.8.8",
-    "gulp-bump": "^0.1.11",
-    "gulp-git": "^0.5.3",
-    "gulp-jshint": "^1.8.4",
-    "gulp-util": "^3.0.1",
-    "jshint-summary": "^0.4.0",
-    "vinyl-source-stream": "^0.1.1",
-    "watchify": "^1.0.2"
+    "grunt": "0.4.x",
+    "grunt-banner": "^0.6.0",
+    "grunt-contrib-clean": "0.6.0",
+    "grunt-contrib-connect": "^0.11.2",
+    "grunt-contrib-less": "^1.2.0",
+    "grunt-contrib-uglify": "0.7.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-typescript": "0.8.0",
+    "phaser": "2.4.4",
+    "typescript": "1.6.x"
   },
-  "main": "./dist/phaser-debug.js",
-  "browser": "./src/index.js",
-  "browserify": {
-    "transform": [
-      "hbsfy",
-      "node-lessify"
-    ],
-    "transform-options": {
-      "node-lessify": "textMode"
-    }
-  }
+  "main": "./dist/phaser-debug.js"
 }
