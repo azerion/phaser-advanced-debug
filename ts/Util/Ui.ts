@@ -1,4 +1,17 @@
+import MatchableElement = Fabrique.MatchableElement;
 module Fabrique {
+    export interface MatchableElement extends HTMLElement {
+        matches: (selector: string) => boolean;
+        webkitMatchesSelector: (selector: string) => boolean;
+        mozMatchesSelector: (selector: string) => boolean;
+        msMatchesSelector: (selector: string) => boolean;
+        oMatchesSelector: (selector: string) => boolean;
+        parentElement: MatchableElement;
+    }
+    export interface DelegateEvent extends Event {
+        delegateTarget: MatchableElement;
+    }
+
     export class Ui {
         public static addClass(dom: HTMLElement, cls: string) {
             var classes = dom.className.split(' ');
@@ -35,37 +48,33 @@ module Fabrique {
             document.head.appendChild(style);
         }
 
-        public static delegate(dom:HTMLElement, evt:string, selector:string, fn:(e:Event) => void) {
-            //dom.addEventListener(evt, function (e:Event) {
-            //    window['target'] = e.target;
-            //    if (e.target && e.target.matches(selector)) {
-            //        e.delegateTarget = e.target;
-            //
-            //        if (fn) {
-            //            fn(e);
-            //        }
-            //    }
-            //    else if (e.target.parentElement && e.target.parentElement.matches(selector)) {
-            //        e.delegateTarget = e.target.parentElement;
-            //
-            //        if (fn) {
-            //            fn(e);
-            //        }
-            //    }
-            //});
+        public static delegate(dom:HTMLElement, evt:string, selector:string, fn:(e:DelegateEvent) => void) {
+            dom.addEventListener(evt, function (e:DelegateEvent) {
+                var target: MatchableElement = <MatchableElement>e.target;
+                window['target'] = target;
+                if (e.target && target.matches(selector)) {
+                    e.delegateTarget = target;
+
+                    if (fn) {
+                        fn(e);
+                    }
+                }
+                else if (target.parentElement && target.parentElement.matches(selector)) {
+                    e.delegateTarget = target.parentElement;
+
+                    if (fn) {
+                        fn(e);
+                    }
+                }
+            });
         }
 
         public static on(dom:HTMLElement, evt:string, delegate:string, fn:(e: Event) => void) {
-            //if (typeof delegate === 'function') {
-            //    fn = delegate;
-            //    delegate = null;
-            //}
-            //
-            //if (delegate) {
-            //    return Ui.delegate(dom, evt, delegate, fn);
-            //}
-            //
-            //dom.addEventListener(evt, fn);
+            if (delegate) {
+                return Ui.delegate(dom, evt, delegate, fn);
+            }
+
+            dom.addEventListener(evt, fn);
         }
 
         public static removeClass(dom:HTMLElement, cls:string) {
@@ -116,4 +125,31 @@ module Fabrique {
         }
     }
 }
+
+// polyfill for matchesSelector
+if (!(<MatchableElement>HTMLElement.prototype).matches) {
+    var htmlprot: MatchableElement = <MatchableElement>HTMLElement.prototype;
+
+    htmlprot.matches =
+        htmlprot.matches ||
+        htmlprot.webkitMatchesSelector ||
+        htmlprot.mozMatchesSelector ||
+        htmlprot.msMatchesSelector ||
+        htmlprot.oMatchesSelector ||
+        function (selector) {
+            // poorman's polyfill for matchesSelector
+            var elements = this.parentElement.querySelectorAll(selector),
+                element,
+                i = 0;
+
+            while (element = elements[i++]) {
+                if (element === this) {
+                    return true;
+                }
+            }
+
+            return false;
+        };
+}
+
 
