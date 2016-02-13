@@ -16,12 +16,18 @@ module Fabrique {
             private details;
             private refresh;
             private selected;
+            private debugRenderer: Phaser.Game;
+
+            private debugItem: PIXI.DisplayObject;
 
             constructor(game:Phaser.Game, parent:Fabrique.Plugins.Debug) {
                 super(game, parent);
 
                 this.name = 'scene';
                 this.title = 'Scene Editor';
+
+                this.debugRenderer = new Phaser.Game(game.width, game.height, Phaser.CANVAS, '', {render: () => this.render()}, true);
+                this.debugRenderer.canvas.id = 'debug-render';
             }
 
 
@@ -36,13 +42,6 @@ module Fabrique {
 
                 Ui.on(this.tree, 'click', 'li', this._onLiClick.bind(this));
                 Ui.on(this.refresh, 'click', '', this._onRefreshClick.bind(this));
-
-                // this.renderer = new PIXI.CanvasRenderer(
-                //     512,
-                //     256,
-                //     document.createElement('canvas'),
-                //     true
-                // );
 
                 return this.panel;
             }
@@ -60,13 +59,23 @@ module Fabrique {
                 this.reloadDetails();
             }
 
-            public reloadDetails = function () {
+            public reloadDetails() {
                 var id = this.selected.dataset.id;
 
                 this.details.innerHTML = detailsHtml(_cache[id]);
+
+                this.debugItem = _cache[id];
+
                 // this.details.appendChild(this.renderer.view);
 
                 // this.renderer.renderDisplayObject(_cache[id]);
+            }
+
+            public render() {
+                if (this.debugItem instanceof Phaser.Sprite) {
+                    this.game.debug.spriteBounds(this.debugItem);
+                    this.game.debug.spriteInfo(<Phaser.Sprite>this.debugItem, 10, 10);
+                }
             }
 
             public select(li) {

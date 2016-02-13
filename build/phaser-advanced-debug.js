@@ -1709,15 +1709,12 @@ var Fabrique;
         var SceneEditor = (function (_super) {
             __extends(SceneEditor, _super);
             function SceneEditor(game, parent) {
+                var _this = this;
                 _super.call(this, game, parent);
-                this.reloadDetails = function () {
-                    var id = this.selected.dataset.id;
-                    this.details.innerHTML = detailsHtml(_cache[id]);
-                    // this.details.appendChild(this.renderer.view);
-                    // this.renderer.renderDisplayObject(_cache[id]);
-                };
                 this.name = 'scene';
                 this.title = 'Scene Editor';
+                this.debugRenderer = new Phaser.Game(game.width, game.height, Phaser.CANVAS, '', { render: function () { return _this.render(); } }, true);
+                this.debugRenderer.canvas.id = 'debug-render';
             }
             SceneEditor.prototype.createPanelElement = function () {
                 Debug.Panel.prototype.createPanelElement.call(this);
@@ -1727,12 +1724,6 @@ var Fabrique;
                 this.refresh = this.panel.querySelector('.refresh');
                 Fabrique.Ui.on(this.tree, 'click', 'li', this._onLiClick.bind(this));
                 Fabrique.Ui.on(this.refresh, 'click', '', this._onRefreshClick.bind(this));
-                // this.renderer = new PIXI.CanvasRenderer(
-                //     512,
-                //     256,
-                //     document.createElement('canvas'),
-                //     true
-                // );
                 return this.panel;
             };
             SceneEditor.prototype.rebuildTree = function () {
@@ -1742,6 +1733,19 @@ var Fabrique;
                 this.select(this.tree.querySelector('li:first-child'));
                 Fabrique.Ui.addClass(this.selected, 'expanded');
                 this.reloadDetails();
+            };
+            SceneEditor.prototype.reloadDetails = function () {
+                var id = this.selected.dataset.id;
+                this.details.innerHTML = detailsHtml(_cache[id]);
+                this.debugItem = _cache[id];
+                // this.details.appendChild(this.renderer.view);
+                // this.renderer.renderDisplayObject(_cache[id]);
+            };
+            SceneEditor.prototype.render = function () {
+                if (this.debugItem instanceof Phaser.Sprite) {
+                    this.game.debug.spriteBounds(this.debugItem);
+                    this.game.debug.spriteInfo(this.debugItem, 10, 10);
+                }
             };
             SceneEditor.prototype.select = function (li) {
                 if (this.selected) {

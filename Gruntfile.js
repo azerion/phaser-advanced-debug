@@ -43,7 +43,7 @@ module.exports = function (grunt) {
             }
         },
         watch: {
-            files: ['ts/**/*'],
+            files: ['ts/**/*', 'styles/*', 'Gruntfile.js'],
             tasks: ['dist'],
             options: {
                 livereload: true

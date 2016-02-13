@@ -146,10 +146,13 @@ declare module Fabrique {
             private details;
             private refresh;
             private selected;
+            private debugRenderer;
+            private debugItem;
             constructor(game: Phaser.Game, parent: Fabrique.Plugins.Debug);
             createPanelElement(): HTMLElement;
             rebuildTree(): void;
-            reloadDetails: () => void;
+            reloadDetails(): void;
+            render(): void;
             select(li: any): void;
             show(): void;
             destroy(): void;
