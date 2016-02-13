@@ -5,7 +5,6 @@
 
     <!-- Include Phaser cache Buster JS -->
     <script type="text/javascript" src="../node_modules/phaser/build/phaser.js"></script>
-    <script type="text/javascript" src="../dist/phaser-debug.js"></script>
     <script type="text/javascript" src="../build/phaser-advanced-debug.js"></script>
     <link rel="stylesheet" type="text/css" href="../build/style.css">
 
@@ -23,7 +22,6 @@
         function preload(){
             // add plugins in one of the states e.g. preload or init
             game.plugins.add(Fabrique.Plugins.Debug);
-//            game.plugins.add(Phaser.Plugin.Debug);
         }
 
         function create(){

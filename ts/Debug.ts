@@ -22,13 +22,15 @@ module Fabrique {
 
         export interface Panels {
             performance: Fabrique.Debug.Performance;
-            //scene: Fabrique.Debug.Scene;
+            bezier: Fabrique.Debug.BezierTester;
+            scene: Fabrique.Debug.SceneEditor;
         }
 
         export class Debug extends Phaser.Plugin {
             public panels: Panels = {
-                performance: null
-                //scene: null
+                performance: null,
+                scene: null,
+                bezier: null
             };
 
             public tickTimings = {
@@ -90,7 +92,8 @@ module Fabrique {
 
                 // create the panels
                 this.panels.performance = new Fabrique.Debug.Performance(this.game, this);
-                //this.panels.scene = new Fabrique.Debug.Scene(this.game, this);
+                this.panels.bezier = new Fabrique.Debug.BezierTester(this.game, this);
+                this.panels.scene = new Fabrique.Debug.SceneEditor(this.game, this);
 
                 // add elements to the page
                 //Ui.addCss(css);

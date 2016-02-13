@@ -9,7 +9,7 @@ module Fabrique {
             public active:boolean = false;
             public menuItem:HTMLAnchorElement;
 
-            private panel:HTMLElement;
+            protected panel:HTMLElement;
 
             constructor(game:Phaser.Game, parent: Fabrique.Plugins.Debug) {
                 this.game = game;
@@ -17,7 +17,7 @@ module Fabrique {
             }
 
             //builds the html for a panel
-            public createPanelElement() {
+            public createPanelElement(): HTMLElement {
                 var elm = this.panel = document.createElement('div');
                 Ui.addClass(elm, 'pdebug-panel ' + this.name);
 

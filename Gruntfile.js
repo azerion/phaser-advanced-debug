@@ -32,20 +32,28 @@ module.exports = function (grunt) {
                 declaration: true,
                 references: [
                     'node_modules/phaser/typescript/pixi.d.ts',
-                    'node_modules/phaser/typescript/phaser.d.ts'
+                    'node_modules/phaser/typescript/phaser.d.ts',
+                    'vendor/*.d.ts'
                 ],
                 noImplicitAny: false
             },
             dist: {
                 src: ['ts/**/*.ts'],
-                dest: 'build/<%= pkg.name %>.js'
+                dest: 'tmp/<%= pkg.name %>.js'
             }
         },
         watch: {
-            files: ['ts/**/*.ts'],
-            tasks: ['typescript'],
+            files: ['ts/**/*'],
+            tasks: ['dist'],
             options: {
                 livereload: true
+            }
+        },
+        copy: {
+            dist: {
+                files: [
+                    {expand: true, cwd: 'tmp', dest: 'build', src: ['**/*.d.ts', '**/*.js.map']}
+                ]
             }
         },
         connect: {
@@ -55,11 +63,31 @@ module.exports = function (grunt) {
                 }
             }
         },
+        handlebars: {
+            options: {
+                namespace: 'Fabrique.Debug'
+            },
+            dist: {
+                files: {
+                    "tmp/templates.js": ["ts/Templates/*.hbs"]
+                }
+            }
+        },
         less: {
-            dev: {
+            dist: {
                 files: {
                     "build/style.css": "styles/*.less"
                 }
+            }
+        },
+        concat: {
+            dist: {
+                src: [
+                    'node_modules/handlebars/dist/handlebars.runtime.js',
+                    'tmp/templates.js',
+                    'tmp/<%= pkg.name %>.js'
+                ],
+                dest: 'build/<%= pkg.name %>.js',
             }
         },
         uglify: {
@@ -80,13 +108,14 @@ module.exports = function (grunt) {
             dist: {
                 files: {
                     'build/<%= pkg.name %>.min.js': [
-                        'build/<%= pkg.name %>.js'
+                        'build/*.js'
                     ]
                 }
             }
         },
         clean: {
-            dist: ['build']
+            dist: ['build'],
+            temp: ['tmp']
         }
     });
 
@@ -95,19 +124,27 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-banner');
     grunt.loadNpmTasks('grunt-typescript');
     grunt.loadNpmTasks('grunt-contrib-connect');
+    grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-less');
+    grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-handlebars');
 
     //dist Build
     grunt.registerTask('dist', [
         'clean:dist',     //Clean the dist folder
         'typescript:dist',//Run typescript on the preprocessed files, for dist (client)
+        'less:dist',
+        'handlebars:dist',
+        'concat:dist',
         'uglify:dist',    //Minify everything
-        'usebanner:dist'    //Minify everything
+        'copy:dist',
+        'usebanner:dist',    //Minify everything
+        'clean:temp'
     ]);
 
     grunt.registerTask('dev', [
-        'typescript:dist',
+        'dist',
         'connect',
         'watch'
     ]);
