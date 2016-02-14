@@ -149,6 +149,7 @@ declare module Fabrique {
             private debugRenderer;
             private debugItem;
             constructor(game: Phaser.Game, parent: Fabrique.Plugins.Debug);
+            static onPositionChange(id: number, axis: string): void;
             createPanelElement(): HTMLElement;
             rebuildTree(): void;
             reloadDetails(): void;
@@ -163,6 +164,7 @@ declare module Fabrique {
 }
 declare var _cache: {}, _id: number;
 declare function listItemOpen(): hbs.SafeString;
+declare function getObjectId(): any;
 declare function typeToString(): string;
 declare module Fabrique {
     module Debug {

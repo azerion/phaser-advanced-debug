@@ -3,7 +3,7 @@
  * Not so simple debug module for phaser
  *
  * Ale Bles <a.bles@orangegames.com>
- * Build at 13-02-2016
+ * Build at 14-02-2016
  * Released under MIT License 
  */
 
@@ -1283,11 +1283,19 @@ this["Fabrique"]["Debug"]["ts/Templates/details.hbs"] = Handlebars.template({"1"
     + alias4(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"name","hash":{},"data":data}) : helper)))
     + "</strong>\n<br/>\n\n<label>Type:</label>\n<strong>"
     + alias4(((helper = (helper = helpers.typeString || (depth0 != null ? depth0.typeString : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"typeString","hash":{},"data":data}) : helper)))
-    + "</strong>\n<br/>\n\n<label>Position:</label>\n<strong>"
+    + "</strong>\n<br/>\n\n<label>Position:</label>\n<strong><input type=\"number\" id=\"input-"
+    + alias4(((helper = (helper = helpers.getId || (depth0 != null ? depth0.getId : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"getId","hash":{},"data":data}) : helper)))
+    + "-x\" value=\""
     + alias4(alias5(((stack1 = (depth0 != null ? depth0.position : depth0)) != null ? stack1.x : stack1), depth0))
-    + "</strong> x <strong>"
+    + "\" size=\"4\" maxlength=\"4\" onchange=\"Fabrique.Debug.SceneEditor.onPositionChange("
+    + alias4(((helper = (helper = helpers.getId || (depth0 != null ? depth0.getId : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"getId","hash":{},"data":data}) : helper)))
+    + ", 'x')\"/></strong> x\n<strong><input type=\"number\" id=\"input-"
+    + alias4(((helper = (helper = helpers.getId || (depth0 != null ? depth0.getId : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"getId","hash":{},"data":data}) : helper)))
+    + "-y\" value=\""
     + alias4(alias5(((stack1 = (depth0 != null ? depth0.position : depth0)) != null ? stack1.y : stack1), depth0))
-    + "</strong>\n<br/>\n\n"
+    + "\" size=\"4\" maxlength=\"4\" onchange=\"Fabrique.Debug.SceneEditor.onPositionChange("
+    + alias4(((helper = (helper = helpers.getId || (depth0 != null ? depth0.getId : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"getId","hash":{},"data":data}) : helper)))
+    + ", 'y')\"/></strong>\n<br/>\n\n"
     + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.children : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "\n"
     + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.texture : depth0),{"name":"if","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "");
@@ -1298,18 +1306,26 @@ this["Fabrique"]["Debug"]["ts/Templates/panel.hbs"] = Handlebars.template({"comp
 },"useData":true});
 
 this["Fabrique"]["Debug"]["ts/Templates/tree.hbs"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
-    var helper;
+    var stack1, helper, alias1=depth0 != null ? depth0 : {};
 
   return "        <span class=\"weak\">("
-    + container.escapeExpression(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {},{"name":"name","hash":{},"data":data}) : helper)))
-    + ")</span>\n";
-},"3":function(container,depth0,helpers,partials,data) {
+    + container.escapeExpression(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(alias1,{"name":"name","hash":{},"data":data}) : helper)))
+    + ") "
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.children : depth0),{"name":"if","hash":{},"fn":container.program(2, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "</span>\n";
+},"2":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return "("
+    + container.escapeExpression(container.lambda(((stack1 = (depth0 != null ? depth0.children : depth0)) != null ? stack1.length : stack1), depth0))
+    + ")";
+},"4":function(container,depth0,helpers,partials,data) {
     var stack1;
 
   return "        <ul>\n"
-    + ((stack1 = helpers.each.call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.children : depth0),{"name":"each","hash":{},"fn":container.program(4, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ((stack1 = helpers.each.call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.children : depth0),{"name":"each","hash":{},"fn":container.program(5, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "        </ul>\n";
-},"4":function(container,depth0,helpers,partials,data) {
+},"5":function(container,depth0,helpers,partials,data) {
     var stack1;
 
   return ((stack1 = container.invokePartial(partials.sceneTree,depth0,{"name":"sceneTree","data":data,"indent":"                ","helpers":helpers,"partials":partials,"decorators":container.decorators})) != null ? stack1 : "");
@@ -1322,7 +1338,7 @@ this["Fabrique"]["Debug"]["ts/Templates/tree.hbs"] = Handlebars.template({"1":fu
     + "\n\n"
     + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.name : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "\n"
-    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.children : depth0),{"name":"if","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.children : depth0),{"name":"if","hash":{},"fn":container.program(4, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "</li>\n";
 },"usePartial":true,"useData":true});
 var __extends = (this && this.__extends) || function (d, b) {
@@ -1702,6 +1718,7 @@ Handlebars.registerPartial('sceneDetails', detailsHtml);
 Handlebars.registerPartial('sceneTree', treeHtml);
 Handlebars.registerHelper('typeString', typeToString);
 Handlebars.registerHelper('listItemOpen', listItemOpen);
+Handlebars.registerHelper('getId', getObjectId);
 var Fabrique;
 (function (Fabrique) {
     var Debug;
@@ -1716,6 +1733,11 @@ var Fabrique;
                 this.debugRenderer = new Phaser.Game(game.width, game.height, Phaser.CANVAS, '', { render: function () { return _this.render(); } }, true);
                 this.debugRenderer.canvas.id = 'debug-render';
             }
+            SceneEditor.onPositionChange = function (id, axis) {
+                var input = document.getElementById('input-' + id + '-' + axis);
+                var ele = _cache[id];
+                ele[axis] = input.value;
+            };
             SceneEditor.prototype.createPanelElement = function () {
                 Debug.Panel.prototype.createPanelElement.call(this);
                 this.panel.innerHTML = panelHtml(this.game.stage);
@@ -1744,7 +1766,9 @@ var Fabrique;
             SceneEditor.prototype.render = function () {
                 if (this.debugItem instanceof Phaser.Sprite) {
                     this.game.debug.spriteBounds(this.debugItem);
-                    this.game.debug.spriteInfo(this.debugItem, 10, 10);
+                }
+                else {
+                    this.game.debug.reset();
                 }
             };
             SceneEditor.prototype.select = function (li) {
@@ -1784,7 +1808,11 @@ var Fabrique;
 var _cache = {}, _id = 0;
 function listItemOpen() {
     _cache[++_id] = this;
+    this._id = _id;
     return new Handlebars.SafeString('<li ' + (this.children && this.children.length ? 'class="has-children" ' : '') + 'data-id="' + _id + '">');
+}
+function getObjectId() {
+    return this._id;
 }
 function typeToString() {
     var node = this;

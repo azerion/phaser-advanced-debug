@@ -9,7 +9,8 @@
 <br/>
 
 <label>Position:</label>
-<strong>{{position.x}}</strong> x <strong>{{position.y}}</strong>
+<strong><input type="number" id="input-{{getId}}-x" value="{{position.x}}" size="4" maxlength="4" onchange="Fabrique.Debug.SceneEditor.onPositionChange({{getId}}, 'x')"/></strong> x
+<strong><input type="number" id="input-{{getId}}-y" value="{{position.y}}" size="4" maxlength="4" onchange="Fabrique.Debug.SceneEditor.onPositionChange({{getId}}, 'y')"/></strong>
 <br/>
 
 {{#if children}}

@@ -8,6 +8,7 @@ Handlebars.registerPartial('sceneDetails', detailsHtml);
 Handlebars.registerPartial('sceneTree', treeHtml);
 Handlebars.registerHelper('typeString', typeToString);
 Handlebars.registerHelper('listItemOpen', listItemOpen);
+Handlebars.registerHelper('getId', getObjectId);
 
 module Fabrique {
     export module Debug {
@@ -28,6 +29,13 @@ module Fabrique {
 
                 this.debugRenderer = new Phaser.Game(game.width, game.height, Phaser.CANVAS, '', {render: () => this.render()}, true);
                 this.debugRenderer.canvas.id = 'debug-render';
+            }
+
+            public static onPositionChange(id: number, axis: string) {
+                var input: HTMLInputElement = <HTMLInputElement>document.getElementById('input-' + id + '-' + axis);
+                var ele: PIXI.DisplayObject = _cache[id];
+
+                ele[axis] = input.value;
             }
 
 
@@ -74,7 +82,9 @@ module Fabrique {
             public render() {
                 if (this.debugItem instanceof Phaser.Sprite) {
                     this.game.debug.spriteBounds(this.debugItem);
-                    this.game.debug.spriteInfo(<Phaser.Sprite>this.debugItem, 10, 10);
+                    //this.game.debug.spriteInfo(<Phaser.Sprite>this.debugItem, 10, 10);
+                } else {
+                    this.game.debug.reset();
                 }
             }
 
@@ -128,10 +138,15 @@ var _cache = {},
 
 function listItemOpen() {
     _cache[++_id] = this;
+    this._id = _id;
 
     return new Handlebars.SafeString(
         '<li ' + (this.children && this.children.length ? 'class="has-children" ' : '') + 'data-id="' + _id + '">'
     );
+}
+
+function getObjectId() {
+    return this._id;
 }
 
 function typeToString() {

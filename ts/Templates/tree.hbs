@@ -2,7 +2,7 @@
     {{typeString}}
 
     {{#if name}}
-        <span class="weak">({{name}})</span>
+        <span class="weak">({{name}}) {{#if children}}({{children.length}}){{/if}}</span>
     {{/if}}
 
     {{#if children}}
