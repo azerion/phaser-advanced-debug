@@ -1595,6 +1595,11 @@ var Fabrique;
         Plugins.Debug = Debug;
     })(Plugins = Fabrique.Plugins || (Fabrique.Plugins = {}));
 })(Fabrique || (Fabrique = {}));
+if (game !== undefined && game.plugins !== undefined) {
+    Phaser.Device.whenReady(function () {
+        game.plugins.add(Fabrique.Plugins.Debug);
+    });
+}
 var Fabrique;
 (function (Fabrique) {
     var Debug;

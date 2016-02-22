@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Example for Phaser cache Buster</title>
+    <title>Example for Phaser Advanced Debug</title>
 
-    <!-- Include Phaser cache Buster JS -->
     <script type="text/javascript" src="../node_modules/phaser/build/phaser.js"></script>
-    <script type="text/javascript" src="../build/phaser-advanced-debug.js"></script>
 
     <style>
         body {
@@ -21,7 +19,6 @@
 
         function preload() {
             // add plugins in one of the states e.g. preload or init
-            game.plugins.add(Fabrique.Plugins.Debug);
             game.load.image('banana', 'banana.png');
         }
 
@@ -36,5 +33,6 @@
     </script>
 </head>
 <body>
+<script type="text/javascript" src="../build/phaser-advanced-debug.js"></script>
 </body>
 </html>
