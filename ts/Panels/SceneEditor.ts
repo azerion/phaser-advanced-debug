@@ -38,6 +38,19 @@ module Fabrique {
                 ele[axis] = input.value;
             }
 
+            public static onScaleChange(id: number, axis: string) {
+                var input: HTMLInputElement = <HTMLInputElement>document.getElementById('input-' + id + '-scale-' + axis);
+                var ele: PIXI.DisplayObject = _cache[id];
+
+                ele.scale[axis] = input.value;
+            }
+
+            public static onAlphaChange(id: number) {
+                var input: HTMLInputElement = <HTMLInputElement>document.getElementById('input-' + id + '-alpha');
+                var ele: PIXI.DisplayObject = _cache[id];
+
+                ele.alpha = parseFloat(input.value);
+            }
 
             public createPanelElement(): HTMLElement {
                 Panel.prototype.createPanelElement.call(this);

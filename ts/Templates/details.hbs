@@ -13,6 +13,15 @@
 <strong><input type="number" id="input-{{getId}}-y" value="{{position.y}}" size="4" maxlength="4" onchange="Fabrique.Debug.SceneEditor.onPositionChange({{getId}}, 'y')"/></strong>
 <br/>
 
+<label>Scale:</label>
+<strong><input type="number" id="input-{{getId}}-scale-x" value="{{scale.x}}" size="4" maxlength="4" onchange="Fabrique.Debug.SceneEditor.onScaleChange({{getId}}, 'x')"/></strong> x
+<strong><input type="number" id="input-{{getId}}-scale-y" value="{{scale.y}}" size="4" maxlength="4" onchange="Fabrique.Debug.SceneEditor.onScaleChange({{getId}}, 'y')"/></strong>
+<br/>
+
+<label>Alpha:</label>
+<strong><input type="number" id="input-{{getId}}-alpha" value="{{alpha}}" size="4" maxlength="4" onchange="Fabrique.Debug.SceneEditor.onAlphaChange({{getId}})"/></strong>
+<br/>
+
 {{#if children}}
     <label>Children:</label>
     <strong>{{children.length}}</strong>

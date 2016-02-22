@@ -117,6 +117,8 @@ module Fabrique {
                         this.panels[p].init.apply(this.panels[p], arguments);
                     }
                 }
+
+                Ui.addCss('style.css');
             }
 
 

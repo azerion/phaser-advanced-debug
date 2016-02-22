@@ -114,9 +114,23 @@ declare module Fabrique {
 declare module Fabrique {
     module Debug {
         class BezierTester extends Fabrique.Debug.Panel {
+            private static BLANK;
+            private static COLORS;
+            private static POS;
+            private points;
+            private object;
+            private activeTween;
+            private graphics;
+            private animationSpeed;
+            private originalX;
+            private originalY;
             constructor(game: Phaser.Game, parent: Fabrique.Plugins.Debug);
             createPanelElement(): any;
             destroy(): void;
+            testObject(object: Phaser.Image | Phaser.Sprite, animationSpeed?: number): void;
+            private dragStart();
+            private dragStop();
+            private dragUpdate();
         }
     }
 }
@@ -150,6 +164,8 @@ declare module Fabrique {
             private debugItem;
             constructor(game: Phaser.Game, parent: Fabrique.Plugins.Debug);
             static onPositionChange(id: number, axis: string): void;
+            static onScaleChange(id: number, axis: string): void;
+            static onAlphaChange(id: number): void;
             createPanelElement(): HTMLElement;
             rebuildTree(): void;
             reloadDetails(): void;
@@ -199,6 +215,7 @@ declare module Fabrique {
     }
 }
 import MatchableElement = Fabrique.MatchableElement;
+declare var scriptSource: string;
 declare module Fabrique {
     interface MatchableElement extends HTMLElement {
         matches: (selector: string) => boolean;
@@ -215,7 +232,7 @@ declare module Fabrique {
         static addClass(dom: HTMLElement, cls: string): void;
         static setText(dom: HTMLElement, txt: string, somehting?: any): void;
         static setStyle(dom: HTMLElement, style: string | string[], value: string): void;
-        static addCss(css: string): void;
+        static addCss(cssUrl: string): void;
         static delegate(dom: HTMLElement, evt: string, selector: string, fn: (e: DelegateEvent) => void): void;
         static on(dom: HTMLElement, evt: string, delegate: string, fn: (e: Event) => void): void;
         static removeClass(dom: HTMLElement, cls: string): void;

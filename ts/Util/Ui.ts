@@ -1,4 +1,20 @@
 import MatchableElement = Fabrique.MatchableElement;
+
+var scriptSource = (() => {
+    var scripts:any = document.getElementsByTagName('script'),
+        script = scripts[scripts.length - 1];
+
+    var src: string;
+    if ((<any>script).getAttribute.length !== undefined) {
+        src = (<any>script).src;
+    } else {
+        src = (<any>script).getAttribute('src', -1);
+    }
+
+
+    return src.slice(0, src.lastIndexOf('/') + 1);
+})();
+
 module Fabrique {
     export interface MatchableElement extends HTMLElement {
         matches: (selector: string) => boolean;
@@ -34,18 +50,12 @@ module Fabrique {
             }
         }
 
-        public static addCss(css: string) {
-            var style: HTMLStyleElement = document.createElement('style');
-
-            style.type = 'text/css';
-
-            if (style.sheet){
-                style.sheet.href = css;
-            } else {
-                style.appendChild(document.createTextNode(css));
-            }
-
-            document.head.appendChild(style);
+        public static addCss(cssUrl: string) {
+            var link = document.createElement('link');
+            link.setAttribute('rel', 'stylesheet');
+            link.setAttribute('type', 'text/css');
+            link.setAttribute('href', scriptSource + cssUrl);
+            document.getElementsByTagName('head')[0].appendChild(link);
         }
 
         public static delegate(dom:HTMLElement, evt:string, selector:string, fn:(e:DelegateEvent) => void) {

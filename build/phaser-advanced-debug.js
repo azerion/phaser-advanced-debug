@@ -3,7 +3,7 @@
  * Not so simple debug module for phaser
  *
  * Ale Bles <a.bles@orangegames.com>
- * Build at 14-02-2016
+ * Build at 22-02-2016
  * Released under MIT License 
  */
 
@@ -1295,7 +1295,25 @@ this["Fabrique"]["Debug"]["ts/Templates/details.hbs"] = Handlebars.template({"1"
     + alias4(alias5(((stack1 = (depth0 != null ? depth0.position : depth0)) != null ? stack1.y : stack1), depth0))
     + "\" size=\"4\" maxlength=\"4\" onchange=\"Fabrique.Debug.SceneEditor.onPositionChange("
     + alias4(((helper = (helper = helpers.getId || (depth0 != null ? depth0.getId : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"getId","hash":{},"data":data}) : helper)))
-    + ", 'y')\"/></strong>\n<br/>\n\n"
+    + ", 'y')\"/></strong>\n<br/>\n\n<label>Scale:</label>\n<strong><input type=\"number\" id=\"input-"
+    + alias4(((helper = (helper = helpers.getId || (depth0 != null ? depth0.getId : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"getId","hash":{},"data":data}) : helper)))
+    + "-scale-x\" value=\""
+    + alias4(alias5(((stack1 = (depth0 != null ? depth0.scale : depth0)) != null ? stack1.x : stack1), depth0))
+    + "\" size=\"4\" maxlength=\"4\" onchange=\"Fabrique.Debug.SceneEditor.onScaleChange("
+    + alias4(((helper = (helper = helpers.getId || (depth0 != null ? depth0.getId : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"getId","hash":{},"data":data}) : helper)))
+    + ", 'x')\"/></strong> x\n<strong><input type=\"number\" id=\"input-"
+    + alias4(((helper = (helper = helpers.getId || (depth0 != null ? depth0.getId : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"getId","hash":{},"data":data}) : helper)))
+    + "-scale-y\" value=\""
+    + alias4(alias5(((stack1 = (depth0 != null ? depth0.scale : depth0)) != null ? stack1.y : stack1), depth0))
+    + "\" size=\"4\" maxlength=\"4\" onchange=\"Fabrique.Debug.SceneEditor.onScaleChange("
+    + alias4(((helper = (helper = helpers.getId || (depth0 != null ? depth0.getId : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"getId","hash":{},"data":data}) : helper)))
+    + ", 'y')\"/></strong>\n<br/>\n\n<label>Alpha:</label>\n<strong><input type=\"number\" id=\"input-"
+    + alias4(((helper = (helper = helpers.getId || (depth0 != null ? depth0.getId : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"getId","hash":{},"data":data}) : helper)))
+    + "-alpha\" value=\""
+    + alias4(((helper = (helper = helpers.alpha || (depth0 != null ? depth0.alpha : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"alpha","hash":{},"data":data}) : helper)))
+    + "\" size=\"4\" maxlength=\"4\" onchange=\"Fabrique.Debug.SceneEditor.onAlphaChange("
+    + alias4(((helper = (helper = helpers.getId || (depth0 != null ? depth0.getId : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"getId","hash":{},"data":data}) : helper)))
+    + ")\"/></strong>\n<br/>\n\n"
     + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.children : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "\n"
     + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.texture : depth0),{"name":"if","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "");
@@ -1428,6 +1446,7 @@ var Fabrique;
                         this.panels[p].init.apply(this.panels[p], arguments);
                     }
                 }
+                Fabrique.Ui.addCss('style.css');
             }
             /**
              * Post-Update is called after all the update methods have already been called, but before the render calls.
@@ -1646,8 +1665,16 @@ var Fabrique;
             __extends(BezierTester, _super);
             function BezierTester(game, parent) {
                 _super.call(this, game, parent);
+                this.points = [];
+                this.activeTween = null;
+                this.originalX = 0;
+                this.originalY = 0;
                 this.name = 'bezier';
                 this.title = 'Bezier Tester';
+                var data = new Image();
+                data.src = BezierTester.BLANK;
+                game.cache.addImage('blank', BezierTester.BLANK, data);
+                this.graphics = this.game.add.graphics(0, 0);
             }
             BezierTester.prototype.createPanelElement = function () {
                 var elm = Debug.Panel.prototype.createPanelElement.call(this);
@@ -1656,6 +1683,74 @@ var Fabrique;
             BezierTester.prototype.destroy = function () {
                 _super.prototype.destroy.call(this);
             };
+            BezierTester.prototype.testObject = function (object, animationSpeed) {
+                var _this = this;
+                if (animationSpeed === void 0) { animationSpeed = 1500; }
+                this.object = object;
+                this.originalX = object.x;
+                this.originalY = object.y;
+                this.animationSpeed = animationSpeed;
+                BezierTester.COLORS.forEach(function (color, index) {
+                    var g = new Phaser.Graphics(_this.game, 0, 0)
+                        .beginFill(color, 0.5)
+                        .drawCircle(0, 0, 20);
+                    var draggablePoint = _this.game.add.sprite(_this.object.x + BezierTester.POS[index].x, _this.object.y + BezierTester.POS[index].y, 'blank');
+                    draggablePoint.addChild(g);
+                    draggablePoint.inputEnabled = true;
+                    draggablePoint.input.enableDrag();
+                    draggablePoint.events.onDragStart.add(function () { return _this.dragStart(); });
+                    draggablePoint.events.onDragStop.add(function () { return _this.dragStop(); });
+                    draggablePoint.events.onDragUpdate.add(function () { return _this.dragUpdate(); });
+                    _this.points[index] = draggablePoint.position;
+                    _this.game.add.existing(draggablePoint);
+                });
+                this.dragUpdate();
+                this.dragStop();
+            };
+            BezierTester.prototype.dragStart = function () {
+                if (null !== this.activeTween) {
+                    console.log('stipping tween!');
+                    this.activeTween.stop();
+                    this.activeTween = null;
+                    this.object.x = this.originalX;
+                    this.object.y = this.originalY;
+                }
+            };
+            BezierTester.prototype.dragStop = function () {
+                console.log('new tween!');
+                this.activeTween = this.game.add.tween(this.object).to({
+                    x: [this.points[0].x, this.points[1].x, this.points[2].x, this.points[3].x],
+                    y: [this.points[0].y, this.points[1].y, this.points[2].y, this.points[3].y],
+                }, this.animationSpeed, Phaser.Easing.Linear.None, true, 0, -1).interpolation(function (v, k) {
+                    return Phaser.Math.bezierInterpolation(v, k);
+                });
+            };
+            BezierTester.prototype.dragUpdate = function () {
+                this.graphics.clear()
+                    .lineStyle(2, 0x008800, 0.5)
+                    .moveTo(this.points[1].x, this.points[1].y)
+                    .lineTo(this.points[0].x, this.points[0].y)
+                    .lineStyle(2, 0x880000, 0.5)
+                    .moveTo(this.points[3].x, this.points[3].y)
+                    .lineTo(this.points[2].x, this.points[2].y)
+                    .lineStyle(4, 0xffff00, 0.5)
+                    .moveTo(this.points[0].x, this.points[0].y);
+                for (var i = 0; i < 1; i += 0.01) {
+                    var p = {
+                        x: Phaser.Math.bezierInterpolation([this.points[0].x, this.points[1].x, this.points[2].x, this.points[3].x], i),
+                        y: Phaser.Math.bezierInterpolation([this.points[0].y, this.points[1].y, this.points[2].y, this.points[3].y], i)
+                    };
+                    this.graphics.lineTo(p.x, p.y);
+                }
+            };
+            BezierTester.BLANK = "data:image/jpeg;base64,/9j/iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMDE0IDc5LjE1Njc5NywgMjAxNC8wOC8yMC0wOTo1MzowMiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTQgKFdpbmRvd3MpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjg0MDMzQkZDN0VCNjExRTU4N0RDOEM3QTAwNTRFRkNCIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjg0MDMzQkZEN0VCNjExRTU4N0RDOEM3QTAwNTRFRkNCIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6ODQwMzNCRkE3RUI2MTFFNTg3REM4QzdBMDA1NEVGQ0IiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6ODQwMzNCRkI3RUI2MTFFNTg3REM4QzdBMDA1NEVGQ0IiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz5KwioFAAAALklEQVR42uzOMQEAAAgDoGn/zjOGDyRg2ubT5pmAgICAgICAgICAgICAgMAJMABAtAM94wpnSQAAAABJRU5ErkJggg==";
+            BezierTester.COLORS = [0x00ff00, 0x008800, 0x880000, 0xff0000];
+            BezierTester.POS = [
+                new Phaser.Point(0, 0),
+                new Phaser.Point(0, 50),
+                new Phaser.Point(50, 50),
+                new Phaser.Point(50, 0),
+            ];
             return BezierTester;
         })(Fabrique.Debug.Panel);
         Debug.BezierTester = BezierTester;
@@ -1737,6 +1832,16 @@ var Fabrique;
                 var input = document.getElementById('input-' + id + '-' + axis);
                 var ele = _cache[id];
                 ele[axis] = input.value;
+            };
+            SceneEditor.onScaleChange = function (id, axis) {
+                var input = document.getElementById('input-' + id + '-scale-' + axis);
+                var ele = _cache[id];
+                ele.scale[axis] = input.value;
+            };
+            SceneEditor.onAlphaChange = function (id) {
+                var input = document.getElementById('input-' + id + '-alpha');
+                var ele = _cache[id];
+                ele.alpha = parseFloat(input.value);
             };
             SceneEditor.prototype.createPanelElement = function () {
                 Debug.Panel.prototype.createPanelElement.call(this);
@@ -2048,6 +2153,17 @@ var Fabrique;
         Debug.Graph = Graph;
     })(Debug = Fabrique.Debug || (Fabrique.Debug = {}));
 })(Fabrique || (Fabrique = {}));
+var scriptSource = (function () {
+    var scripts = document.getElementsByTagName('script'), script = scripts[scripts.length - 1];
+    var src;
+    if (script.getAttribute.length !== undefined) {
+        src = script.src;
+    }
+    else {
+        src = script.getAttribute('src', -1);
+    }
+    return src.slice(0, src.lastIndexOf('/') + 1);
+})();
 var Fabrique;
 (function (Fabrique) {
     var Ui = (function () {
@@ -2071,16 +2187,12 @@ var Fabrique;
                 }
             }
         };
-        Ui.addCss = function (css) {
-            var style = document.createElement('style');
-            style.type = 'text/css';
-            if (style.sheet) {
-                style.sheet.href = css;
-            }
-            else {
-                style.appendChild(document.createTextNode(css));
-            }
-            document.head.appendChild(style);
+        Ui.addCss = function (cssUrl) {
+            var link = document.createElement('link');
+            link.setAttribute('rel', 'stylesheet');
+            link.setAttribute('type', 'text/css');
+            link.setAttribute('href', scriptSource + cssUrl);
+            document.getElementsByTagName('head')[0].appendChild(link);
         };
         Ui.delegate = function (dom, evt, selector, fn) {
             dom.addEventListener(evt, function (e) {
