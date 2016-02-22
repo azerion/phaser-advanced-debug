@@ -1596,11 +1596,6 @@ var Fabrique;
         Plugins.Debug = Debug;
     })(Plugins = Fabrique.Plugins || (Fabrique.Plugins = {}));
 })(Fabrique || (Fabrique = {}));
-if (game !== undefined && game.plugins !== undefined) {
-    Phaser.Device.whenReady(function () {
-        game.plugins.add(Fabrique.Plugins.Debug);
-    });
-}
 var Fabrique;
 (function (Fabrique) {
     var Debug;
@@ -2284,5 +2279,10 @@ if (!HTMLElement.prototype.matches) {
                 }
                 return false;
             };
+}
+if (game !== undefined && game.plugins !== undefined) {
+    Phaser.Device.whenReady(function () {
+        game.plugins.add(Fabrique.Plugins.Debug);
+    });
 }
 //# sourceMappingURL=phaser-advanced-debug.js.map

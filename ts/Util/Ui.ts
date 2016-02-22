@@ -163,3 +163,10 @@ if (!(<MatchableElement>HTMLElement.prototype).matches) {
 }
 
 
+if (game !== undefined && game.plugins !== undefined) {
+    Phaser.Device.whenReady(() => {
+        game.plugins.add(Fabrique.Plugins.Debug);
+    });
+}
+
+
