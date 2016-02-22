@@ -1249,8 +1249,9 @@ return /******/ (function(modules) { // webpackBootstrap
 ;
 this["Fabrique"] = this["Fabrique"] || {};
 this["Fabrique"]["Debug"] = this["Fabrique"]["Debug"] || {};
+this["Fabrique"]["Debug"]["Templates"] = this["Fabrique"]["Debug"]["Templates"] || {};
 
-this["Fabrique"]["Debug"]["ts/Templates/details.hbs"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
+this["Fabrique"]["Debug"]["Templates"]["ts/Templates/details.hbs"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
     var stack1;
 
   return "    <label>Children:</label>\n    <strong>"
@@ -1319,11 +1320,11 @@ this["Fabrique"]["Debug"]["ts/Templates/details.hbs"] = Handlebars.template({"1"
     + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.texture : depth0),{"name":"if","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "");
 },"useData":true});
 
-this["Fabrique"]["Debug"]["ts/Templates/panel.hbs"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+this["Fabrique"]["Debug"]["Templates"]["ts/Templates/panel.hbs"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<ul class=\"sidebar\">\n</ul>\n\n<a href=\"#\" class=\"refresh\">refresh</a>\n<div class=\"details\">\n</div>\n";
 },"useData":true});
 
-this["Fabrique"]["Debug"]["ts/Templates/tree.hbs"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
+this["Fabrique"]["Debug"]["Templates"]["ts/Templates/tree.hbs"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
     var stack1, helper, alias1=depth0 != null ? depth0 : {};
 
   return "        <span class=\"weak\">("
@@ -1811,9 +1812,9 @@ var Fabrique;
     })(Debug = Fabrique.Debug || (Fabrique.Debug = {}));
 })(Fabrique || (Fabrique = {}));
 /// <reference path="Panel.ts"/>
-var detailsHtml = Fabrique.Debug['ts/Templates/details.hbs'];
-var panelHtml = Fabrique.Debug['ts/Templates/panel.hbs'];
-var treeHtml = Fabrique.Debug['ts/Templates/tree.hbs'];
+var detailsHtml = Fabrique.Debug.Templates['ts/Templates/details.hbs'];
+var panelHtml = Fabrique.Debug.Templates['ts/Templates/panel.hbs'];
+var treeHtml = Fabrique.Debug.Templates['ts/Templates/tree.hbs'];
 Handlebars.registerPartial('sceneDetails', detailsHtml);
 Handlebars.registerPartial('sceneTree', treeHtml);
 Handlebars.registerHelper('typeString', typeToString);

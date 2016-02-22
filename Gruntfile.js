@@ -65,7 +65,7 @@ module.exports = function (grunt) {
         },
         handlebars: {
             options: {
-                namespace: 'Fabrique.Debug'
+                namespace: 'Fabrique.Debug.Templates'
             },
             dist: {
                 files: {

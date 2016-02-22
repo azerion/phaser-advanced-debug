@@ -1,8 +1,13 @@
 /// <reference path="Panel.ts"/>
+declare module Fabrique {
+    module Debug {
+        var Templates: any;
+    }
+}
 
-var detailsHtml = Fabrique.Debug['ts/Templates/details.hbs'];
-var panelHtml = Fabrique.Debug['ts/Templates/panel.hbs'];
-var treeHtml = Fabrique.Debug['ts/Templates/tree.hbs'];
+var detailsHtml = Fabrique.Debug.Templates['ts/Templates/details.hbs'];
+var panelHtml = Fabrique.Debug.Templates['ts/Templates/panel.hbs'];
+var treeHtml = Fabrique.Debug.Templates['ts/Templates/tree.hbs'];
 
 Handlebars.registerPartial('sceneDetails', detailsHtml);
 Handlebars.registerPartial('sceneTree', treeHtml);

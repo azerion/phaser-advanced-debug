@@ -150,6 +150,11 @@ declare module Fabrique {
         }
     }
 }
+declare module Fabrique {
+    module Debug {
+        var Templates: any;
+    }
+}
 declare var detailsHtml: any;
 declare var panelHtml: any;
 declare var treeHtml: any;
