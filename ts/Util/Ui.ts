@@ -163,9 +163,10 @@ if (!(<MatchableElement>HTMLElement.prototype).matches) {
 }
 
 
-if (game !== undefined && game.plugins !== undefined) {
+if (Phaser.GAMES.length > 0) {
+    //Attach to the first Phaser game there is
     Phaser.Device.whenReady(() => {
-        game.plugins.add(Fabrique.Plugins.Debug);
+        Phaser.GAMES[0].plugins.add(Fabrique.Plugins.Debug);
     });
 }
 

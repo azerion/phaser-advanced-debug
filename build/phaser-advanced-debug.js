@@ -2290,9 +2290,10 @@ if (!HTMLElement.prototype.matches) {
                 return false;
             };
 }
-if (game !== undefined && game.plugins !== undefined) {
+if (Phaser.GAMES.length > 0) {
+    //Attach to the first Phaser game there is
     Phaser.Device.whenReady(function () {
-        game.plugins.add(Fabrique.Plugins.Debug);
+        Phaser.GAMES[0].plugins.add(Fabrique.Plugins.Debug);
     });
 }
 //# sourceMappingURL=phaser-advanced-debug.js.map
