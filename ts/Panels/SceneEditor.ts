@@ -34,6 +34,7 @@ module Fabrique {
 
                 this.debugRenderer = new Phaser.Game(game.width, game.height, Phaser.CANVAS, '', {render: () => this.render()}, true);
                 this.debugRenderer.canvas.id = 'debug-render';
+                this.debugRenderer.canvas.style.pointerEvents = 'none';
             }
 
             public static onPositionChange(id: number, axis: string) {
@@ -97,12 +98,20 @@ module Fabrique {
                 // this.renderer.renderDisplayObject(_cache[id]);
             }
 
+            public toggle() {
+                this.debugItem = null;
+                super.toggle();
+            }
+
             public render() {
                 if (this.debugItem instanceof Phaser.Sprite) {
-                    this.game.debug.spriteBounds(this.debugItem);
-                    //this.game.debug.spriteInfo(<Phaser.Sprite>this.debugItem, 10, 10);
+                    this.debugRenderer.debug.spriteBounds(this.debugItem);
+                    this.debugRenderer.debug.spriteInfo(<Phaser.Sprite>this.debugItem, 10, 10);
+                } else if (this.debugItem instanceof Phaser.Image) {
+                    this.debugRenderer.debug.spriteBounds(this.debugItem);
+                    this.debugRenderer.debug.spriteInfo(<Phaser.Sprite>this.debugItem, 10, 10);
                 } else {
-                    this.game.debug.reset();
+                    this.debugRenderer.debug.reset();
                 }
             }
 

@@ -25,6 +25,10 @@
         function create() {
             banana = game.add.sprite(game.width / 2, game.height / 2, 'banana');
             banana.anchor.set(0.5);
+            banana.inputEnabled = true;
+            banana.events.onInputDown.add(function () {
+                console.log('wuuut');
+            });
         }
 
         function update() {
@@ -33,6 +37,6 @@
     </script>
 </head>
 <body>
-<!--<script type="text/javascript" src="../build/phaser-advanced-debug.js"></script>-->
+<script type="text/javascript" src="../build/phaser-advanced-debug.js"></script>
 </body>
 </html>

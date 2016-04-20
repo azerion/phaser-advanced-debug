@@ -3,7 +3,7 @@
  * Not so simple debug module for phaser
  *
  * Ale Bles <a.bles@orangegames.com>
- * Build at 22-02-2016
+ * Build at 20-04-2016
  * Released under MIT License 
  */
 
@@ -1828,6 +1828,7 @@ var Fabrique;
                 this.title = 'Scene Editor';
                 this.debugRenderer = new Phaser.Game(game.width, game.height, Phaser.CANVAS, '', { render: function () { return _this.render(); } }, true);
                 this.debugRenderer.canvas.id = 'debug-render';
+                this.debugRenderer.canvas.style.pointerEvents = 'none';
             }
             SceneEditor.onPositionChange = function (id, axis) {
                 var input = document.getElementById('input-' + id + '-' + axis);
@@ -1869,12 +1870,21 @@ var Fabrique;
                 // this.details.appendChild(this.renderer.view);
                 // this.renderer.renderDisplayObject(_cache[id]);
             };
+            SceneEditor.prototype.toggle = function () {
+                this.debugItem = null;
+                _super.prototype.toggle.call(this);
+            };
             SceneEditor.prototype.render = function () {
                 if (this.debugItem instanceof Phaser.Sprite) {
-                    this.game.debug.spriteBounds(this.debugItem);
+                    this.debugRenderer.debug.spriteBounds(this.debugItem);
+                    this.debugRenderer.debug.spriteInfo(this.debugItem, 10, 10);
+                }
+                else if (this.debugItem instanceof Phaser.Image) {
+                    this.debugRenderer.debug.spriteBounds(this.debugItem);
+                    this.debugRenderer.debug.spriteInfo(this.debugItem, 10, 10);
                 }
                 else {
-                    this.game.debug.reset();
+                    this.debugRenderer.debug.reset();
                 }
             };
             SceneEditor.prototype.select = function (li) {

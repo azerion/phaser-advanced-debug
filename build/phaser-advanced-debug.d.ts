@@ -174,6 +174,7 @@ declare module Fabrique {
             createPanelElement(): HTMLElement;
             rebuildTree(): void;
             reloadDetails(): void;
+            toggle(): void;
             render(): void;
             select(li: any): void;
             show(): void;
